@@ -1,0 +1,66 @@
+(define-struct point2d (x y))
+(define-struct point3d (x y z))
+(define-struct vector2d (x y))
+(define-struct vector3d (x y z))
+
+(defimpl stringify point2d:point2d?
+         ((->string
+            (lambda (x) (++ "<point x: " (->string (point2d:get-x x)) ", y: " (->string (point2d:get-y x)) ">")))))
+(defimpl collec point2d:point2d?
+         ((length   (lambda (_) 2))
+          (in?      (lambda (x e) (or (eq? (point2d:get-x x) e) (eq? (point2d:get-y x) e))))
+          (get-from (collec:get-from-skeleton
+            (lambda (x e dflt)
+              (case e
+                ((0) (point2d:get-x x))
+                ((1) (point2d:get-y x))
+                (else dflt)))))))
+
+(defimpl stringify point3d:point3d?
+         ((->string
+            (lambda (x) (++ "<point x: " (->string (point3d:get-x x))
+                                 ", y: " (->string (point3d:get-y x))
+                                 ", z: " (->string (point3d:get-z x)) ">")))))
+(defimpl collec point3d:point3d?
+         ((length   (lambda (_) 3))
+          (in?      (lambda (x e) (or (eq? (point3d:get-x x) e)
+                                      (eq? (point3d:get-y x) e)
+                                      (eq? (point3d:get-z x) e))))
+          (get-from (collec:get-from-skeleton
+            (lambda (x e dflt)
+              (case e
+                ((0) (point3d:get-x x))
+                ((1) (point3d:get-y x))
+                ((2) (point3d:get-z x))
+                (else dflt)))))))
+
+(defimpl stringify vector2d:vector2d?
+         ((->string
+            (lambda (x) (++ "<vector x: " (->string (vector2d:get-x x)) ", y: " (->string (vector2d:get-y x)) ">")))))
+(defimpl collec vector2d:vector2d?
+         ((length   (lambda (_) 2))
+          (in?      (lambda (x e) (or (eq? (vector2d:get-x x) e) (eq? (vector2d:get-y x) e))))
+          (get-from (collec:get-from-skeleton
+            (lambda (x e dflt)
+              (case e
+                ((0) (vector2d:get-x x))
+                ((1) (vector2d:get-y x))
+                (else dflt)))))))
+
+(defimpl stringify vector3d:vector3d?
+         ((->string
+            (lambda (x) (++ "<vector x: " (->string (vector3d:get-x x))
+                                  ", y: " (->string (vector3d:get-y x))
+                                  ", z: " (->string (vector3d:get-z x)) ">")))))
+(defimpl collec vector3d:vector3d?
+         ((length   (lambda (_) 3))
+          (in?      (lambda (x e) (or (eq? (vector3d:get-x x) e)
+                                      (eq? (vector3d:get-y x) e)
+                                      (eq? (vector3d:get-z x) e))))
+          (get-from (collec:get-from-skeleton
+            (lambda (x e dflt)
+              (case e
+                ((0) (vector3d:get-x x))
+                ((1) (vector3d:get-y x))
+                ((2) (vector3d:get-z x))
+                (else dflt)))))))

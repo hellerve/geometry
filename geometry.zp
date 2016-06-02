@@ -1,0 +1,218 @@
+(load "geometry/types")
+
+(module "geometry"
+  (export
+    (list "vector2d" vector2d)
+    (list "vector3d" vector3d)
+    (list "point2d" point2d)
+    (list "point3d" point3d)
+    (list "ORIGIN2D" ORIGIN2D)
+    (list "ORIGIN3D" ORIGIN3D)
+    (list "vector->point" vector->point)
+    (list "vector2d->point2d" vector2d->point2d)
+    (list "vector3d->point3d" vector3d->point3d)
+    (list "2d-" twod-)
+    (list "2d+" twod+)
+    (list "3d-" threed-)
+    (list "3d+" threed+)
+    (list "point2d-" point2d-)
+    (list "point2d+" point2d+)
+    (list "vector2d-" vector2d-)
+    (list "vector2d+" vector2d+)
+    (list "point3d-" point3d-)
+    (list "point3d+" point3d+)
+    (list "vector3d-" vector3d-)
+    (list "vector3d+" vector3d+)
+    
+    (list "dot" dot)
+    (list "cross" cross))
+
+  (ORIGIN2D (point2d:make-point2d 0 0))
+
+  (ORIGIN3D (point3d:make-point3d 0 0 0))
+
+  (point2d (case-lambda
+    ((x) (cond
+           ((vector2d:vector2d? x)
+            (point2d:make-point2d
+              (vector2d:get-x x)
+              (vector2d:get-y x)))
+           ((point2d:point2d? x)
+            x)
+           (else :no)))
+    ((x y) (if (all? number? (list x y))
+            (point2d:make-point2d x y)
+            :no))))
+
+  (vector2d (case-lambda
+    ((x) (cond
+           ((point2d:point2d? x)
+            (vector2d:make-vector2d
+              (point2d:get-x x)
+              (point2d:get-y x)))
+           ((vector2d:vector2d? x)
+            x)
+           (else :no)))
+    ((x y) (if (all? number? (list x y))
+            (vector2d:make-vector2d x y)
+            :no))))
+
+  (point3d (case-lambda
+    ((x) (cond
+           ((vector3d:vector3d? x)
+            (point3d:make-point3d
+              (vector3d:get-x x)
+              (vector3d:get-y x)
+              (vector3d:get-z x)))
+           ((point3d:point3d? x)
+            x)
+            (else :no)))
+    ((x y z) (if (all? number? (list x y z))
+              (point3d:make-point3d x y z)
+              :no))))
+
+  (vector3d (case-lambda
+    ((x) (cond
+           ((point3d:point3d? x)
+            (vector3d:make-vector3d
+              (point3d:get-x x)
+              (point3d:get-y x)
+              (point3d:get-z x)))
+           ((vector3d:vector3d? x)
+            x)
+            (else :no)))
+    ((x y z) (if (all? number? (list x y z))
+              (vector3d:make-vector3d x y z)
+              :no))))
+
+  (vector2d+ (lambda x
+    (let ((red (lambda (acc x)
+            (vector2d
+              (+ (vector2d:get-x acc)
+                 (vector2d:get-x x))
+              (+ (vector2d:get-y acc)
+                 (vector2d:get-y x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (vector2d- (lambda x
+    (let ((red (lambda (acc x)
+            (vector2d
+              (- (vector2d:get-x acc)
+                 (vector2d:get-x x))
+              (- (vector2d:get-y acc)
+                 (vector2d:get-y x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (point2d+ (lambda x
+    (let ((red (lambda (acc x)
+            (point2d
+              (+ (point2d:get-x acc)
+                 (point2d:get-x x))
+              (+ (point2d:get-y acc)
+                 (point2d:get-y x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (point2d- (lambda x
+    (let ((red (lambda (acc x)
+            (point2d
+              (- (point2d:get-x acc)
+                 (point2d:get-x x))
+              (- (point2d:get-y acc)
+                 (point2d:get-y x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (vector3d+ (lambda x
+    (let ((red (lambda (acc x)
+            (vector3d
+              (+ (vector3d:get-x acc)
+                 (vector3d:get-x x))
+              (+ (vector3d:get-y acc)
+                 (vector3d:get-y x))
+              (+ (vector3d:get-z acc)
+                 (vector3d:get-z x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (vector3d- (lambda x
+    (let ((red (lambda (acc x)
+            (vector3d
+              (- (vector3d:get-x acc)
+                 (vector3d:get-x x))
+              (- (vector3d:get-y acc)
+                 (vector3d:get-y x))
+              (- (vector3d:get-z acc)
+                 (vector3d:get-z x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (point3d+ (lambda x
+    (let ((red (lambda (acc x)
+            (point3d
+              (+ (point3d:get-x acc)
+                 (point3d:get-x x))
+              (+ (point3d:get-y acc)
+                 (point3d:get-y x))
+              (+ (point3d:get-z acc)
+                 (point3d:get-z x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (point3d- (lambda x
+    (let ((red (lambda (acc x)
+            (point3d
+              (- (point3d:get-x acc)
+                 (point3d:get-x x))
+              (- (point3d:get-y acc)
+                 (point3d:get-y x))
+              (- (point3d:get-z acc)
+                 (point3d:get-z x))))))
+      (reduce red (car x) (cdr x)))))
+
+  (twod+ (lambda x
+    (let* ((fst (car x))
+           (build (if (point2d:point2d? fst) point2d vector2d))
+           (red (if (point:point2d? fst) point2d+ vector2d+)))
+      (reduce red fst (map build (cdr x))))))
+
+  (twod- (lambda x
+    (let* ((fst (car x))
+           (build (if (point2d:point2d? fst) point2d vector2d))
+           (red (if (point2d:point2d? fst) point2d- vector2d-)))
+      (reduce red fst (map build (cdr x))))))
+
+  (threed+ (lambda x
+    (let* ((fst (car x))
+           (build (if (point3d:point3d? fst) point3d vector3d))
+           (red (if (point3d:point3d? fst) point3d+ vector3d+)))
+      (reduce red fst (map build (cdr x))))))
+
+  (threed- (lambda x
+    (let* ((fst (car x))
+           (build (if (point3d:point3d? fst) point3d vector3d))
+           (red (if (point3d:point3d? fst) point3d- vector3d-)))
+      (reduce red fst (map build (cdr x))))))
+
+  (vector2d->point2d (lambda (x)
+    (twod+ ORIGIN2D (point2d x))))
+
+  (vector3d->point3d (lambda (x)
+    (threed+ ORIGIN3D (point3d x))))
+
+  (vector->point (lambda (x)
+    (cond
+      ((vector2d:vector2d? x)
+        (vector2d->point2d x))
+      ((vector3d:vector3d? x)
+        (vector3d->point3d x))
+      (else :no))))
+      
+  (cross (lambda (x y)
+    (vector3d
+      (- (* (vector3d:get-y x) (vector3d:get-z y))
+         (* (vector3d:get-z x) (vector3d:get-y y)))
+      (- (* (vector3d:get-z x) (vector3d:get-x y))
+         (* (vector3d:get-x x) (vector3d:get-z y)))
+      (- (* (vector3d:get-x x) (vector3d:get-y y))
+         (* (vector3d:get-y x) (vector3d:get-x y))))))
+
+  (dot (lambda (x y)
+    (+ (* (vector3d:get-x x) (vector3d:get-x y))
+       (* (vector3d:get-y x) (vector3d:get-y y))
+       (* (vector3d:get-z x) (vector3d:get-z y))))))

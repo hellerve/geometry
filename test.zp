@@ -1,0 +1,173 @@
+(load "geometry/geometry")
+(load "minitest/minitest")
+(define geometry:point2d (import "geometry:point2d"))
+(define geometry:point3d (import "geometry:point3d"))
+(define geometry:vector2d (import "geometry:vector2d"))
+(define geometry:vector3d (import "geometry:vector3d"))
+(define geometry:2d+ (import "geometry:2d+"))
+(define geometry:2d- (import "geometry:2d-"))
+(define geometry:3d+ (import "geometry:3d+"))
+(define geometry:3d- (import "geometry:3d-"))
+(define geometry:vector2d->point2d (import "geometry:vector2d->point2d"))
+(define geometry:vector3d->point3d (import "geometry:vector3d->point3d"))
+(define geometry:vector->point (import "geometry:vector->point"))
+(define geometry:ORIGIN2D (import "geometry:ORIGIN2D"))
+(define geometry:ORIGIN3D (import "geometry:ORIGIN3D"))
+(define geometry:cross (import "geometry:cross"))
+(define geometry:dot (import "geometry:dot"))
+(define minitest:assert-equal (import "minitest:assert-equal"))
+(define minitest:assert-not-equal (import "minitest:assert-not-equal"))
+((import "minitest:colorize") #t)
+((import "minitest:verbose") #t)
+
+(minitest:assert-equal
+  (geometry:types:make-point2d 1 2)
+  (geometry:point2d 1 2)
+  "test that we can create 2d points")
+
+(minitest:assert-not-equal
+  (geometry:types:make-point2d 2 2)
+  (geometry:point2d 1 2)
+  "test that we can 2d points are distinguishable")
+
+(minitest:assert-equal
+  (geometry:types:make-point3d 1 2 3)
+  (geometry:point3d 1 2 3)
+  "test that we can create 3d points")
+
+(minitest:assert-not-equal
+  (geometry:types:make-point3d 2 2 3)
+  (geometry:point3d 1 2 3)
+  "test that we can 3d points are distinguishable")
+
+(minitest:assert-equal
+  (geometry:types:make-vector2d 1 2)
+  (geometry:vector2d 1 2)
+  "test that we can create 2d vectors")
+
+(minitest:assert-not-equal
+  (geometry:types:make-vector2d 2 2)
+  (geometry:vector2d 1 2)
+  "test that we can 2d vectors are distinguishable")
+
+(minitest:assert-not-equal
+  (geometry:point2d 1 2)
+  (geometry:vector2d 1 2)
+  "test that we can 2d vectors are distinguishable from points")
+
+(minitest:assert-equal
+  (geometry:types:make-vector3d 1 2 3)
+  (geometry:vector3d 1 2 3)
+  "test that we can create 3d vectors")
+
+(minitest:assert-not-equal
+  (geometry:types:make-vector3d 2 2 3)
+  (geometry:vector3d 1 2 3)
+  "test that we can 3d vectors are distinguishable")
+
+(minitest:assert-not-equal
+  (geometry:point3d 1 2 3)
+  (geometry:vector3d 1 2 3)
+  "test that we can 3d vectors are distinguishable from points")
+
+(minitest:assert-equal
+  (geometry:point3d 2 4 6)
+  (geometry:3d+ (geometry:point3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can add two 3d points")
+
+(minitest:assert-equal
+  (geometry:point3d 3 6 9)
+  (geometry:3d+ (geometry:point3d 1 2 3) (geometry:point3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can add multiple 3d points")
+
+(minitest:assert-equal
+  (geometry:vector3d 2 4 6)
+  (geometry:3d+ (geometry:vector3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can add two 3d vectors")
+
+(minitest:assert-equal
+  (geometry:vector3d 3 6 9)
+  (geometry:3d+ (geometry:vector3d 1 2 3) (geometry:vector3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can add multiple 3d vectors")
+
+(minitest:assert-equal
+  (geometry:point3d 2 4 6)
+  (geometry:3d+ (geometry:point3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can add 3d vectors to points")
+
+(minitest:assert-equal
+  (geometry:vector3d 2 4 6)
+  (geometry:3d+ (geometry:vector3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can add 3d points to vectors")
+
+(minitest:assert-equal
+  (geometry:point3d 0 0 0)
+  (geometry:3d- (geometry:point3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can subtract two 3d points")
+
+(minitest:assert-equal
+  (geometry:point3d 1 2 3)
+  (geometry:3d- (geometry:point3d 3 6 9) (geometry:point3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can subtract multiple 3d points")
+
+(minitest:assert-equal
+  (geometry:vector3d 0 0 0)
+  (geometry:3d- (geometry:vector3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can subtract two 3d vectors")
+
+(minitest:assert-equal
+  (geometry:vector3d 1 2 3)
+  (geometry:3d- (geometry:vector3d 3 6 9) (geometry:vector3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can subtract multiple 3d vectors")
+
+(minitest:assert-equal
+  (geometry:point3d 0 0 0)
+  (geometry:3d- (geometry:point3d 1 2 3) (geometry:vector3d 1 2 3))
+  "test that we can subtract 3d vectors from points")
+
+(minitest:assert-equal
+  (geometry:vector3d 0 0 0)
+  (geometry:3d- (geometry:vector3d 1 2 3) (geometry:point3d 1 2 3))
+  "test that we can subract 3d points from vectors")
+
+(minitest:assert-equal
+  (geometry:point2d 1 2)
+  (geometry:vector->point (geometry:vector2d 1 2))
+  "test that we can coerce 2d vectors to points (generically)")
+
+(minitest:assert-equal
+  (geometry:point2d 1 2)
+  (geometry:vector2d->point2d (geometry:vector2d 1 2))
+  "test that we can coerce 2d vectors to points")
+
+(minitest:assert-equal
+  (geometry:point3d 1 2 3)
+  (geometry:vector->point (geometry:vector3d 1 2 3))
+  "test that we can coerce 3d vectors to points (generically)")
+
+(minitest:assert-equal
+  (geometry:point3d 1 2 3)
+  (geometry:vector3d->point3d (geometry:vector3d 1 2 3))
+  "test that we can coerce 3d vectors to points")
+
+(minitest:assert-equal
+  (geometry:point2d 0 0)
+  geometry:ORIGIN2D
+  "test that ORIGIN2D fixture is correct")
+
+(minitest:assert-equal
+  (geometry:point3d 0 0 0)
+  geometry:ORIGIN3D
+  "test that ORIGIN3D fixture is correct")
+
+(minitest:assert-equal
+  (geometry:vector3d -3 6 -3)
+  (geometry:cross (geometry:vector3d 1 2 3) (geometry:vector3d 4 5 6))
+  "test that the crossproduct works")
+
+(minitest:assert-equal
+  3
+  (geometry:dot (geometry:vector3d 1 3 -5) (geometry:vector3d 4 -2 -1))
+  "test that the dotproduct works")
+
+((import "minitest:results"))
