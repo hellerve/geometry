@@ -18,32 +18,25 @@ collections.
 
 ```clojure
 (load "geometry/geometry")
+(import-all "geometry")
 ; The constructor of 2D points
-(define geometry:point2d (import "geometry:point2d"))
 (geometry:point2d 1 2)
 
 ; The constructor of 3D points
-(define geometry:point3d (import "geometry:point3d"))
 (geometry:point3d 1 2 3)
 
 ; The constructor of 2D vectors
-(define geometry:vector2d (import "geometry:vector2d"))
 (geometry:vector2d 1 2)
 
 ; The constructor of 3D vectors
-(define geometry:vector3d (import "geometry:vector3d"))
 (geometry:vector3d 1 2 3)
 
 ; An interface for adding/substracting multiple two-dimensional elements
 ; The type will be coerced to match the first argument
-(define geometry:2d+ (import "geometry:2d+"))
-(define geometry:2d- (import "geometry:2d-"))
 (geometry:2d+ (geometry:vector2d 1 2) (geometry:point2d 1 2)) ; will return a vector
 (geometry:2d- (geometry:point2d 1 2) (geometry:vector2d 1 2)) ; will return a point
 
 ; Of course we can do the same to three-dimensional elements
-(define geometry:3d+ (import "geometry:3d+"))
-(define geometry:3d- (import "geometry:3d-"))
 (geometry:3d+ (geometry:vector3d 1 2 3) (geometry:point3d 1 2 3)) ; will return a vector
 (geometry:3d- (geometry:point3d 1 2 3) (geometry:vector3d 1 2 3)) ; will return a point
 
@@ -54,14 +47,12 @@ collections.
 
 ; The origin could be handy sometimes;
 ; it is just a meaningful definition for a point with all coordinates set to 0
-(define geometry:ORIGIN2D (import "geometry:ORIGIN2D"))
-(define geometry:ORIGIN3D (import "geometry:ORIGIN3D"))
+geometry:ORIGIN2D
+geometry:ORIGIN3D
 
 ; dot- and crossproduct exist also
-(define geometry:dot (import "geometry:dot"))
 (geometry:dot (geometry:vector3d 1 3 -5) (geometry:vector3d 4 -2 -1)) ; => 3
 
-(define geometry:cross (import "geometry:cross"))
 (geometry:dot (geometry:vector3d 1 2 3) (geometry:vector3d 4 5 6)) ; => vector with contents (-3 6 -3)
 ```
 
