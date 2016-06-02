@@ -3,11 +3,18 @@
 A minimal geometry library for and in zepto.
 Supports 2D and 3D points and vectors.
 
+## Installation
+```
+zeps install hellerve/geometry
+```
+
 ## Usage
 
 The module includes an admittedly small but tested
 interface to the datatypes `point2d`, `point3d`, `vector2d`
-and `vector2d`.
+and `vector2d`. They all implement the stringify and
+collec protocols to interface nicely with existing
+collections.
 
 ```clojure
 (load "geometry/geometry")
