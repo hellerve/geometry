@@ -12,7 +12,7 @@ zeps install hellerve/geometry
 
 The module includes an admittedly small but tested
 interface to the datatypes `point2d`, `point3d`, `vector2d`
-and `vector2d`. They all implement the stringify and
+and `vector3d`. They all implement the stringify and
 collec protocols to interface nicely with existing
 collections.
 
@@ -53,7 +53,7 @@ geometry:ORIGIN3D
 ; dot- and crossproduct exist also
 (geometry:dot (geometry:vector3d 1 3 -5) (geometry:vector3d 4 -2 -1)) ; => 3
 
-(geometry:dot (geometry:vector3d 1 2 3) (geometry:vector3d 4 5 6)) ; => vector with contents (-3 6 -3)
+(geometry:cross (geometry:vector3d 1 2 3) (geometry:vector3d 4 5 6)) ; => vector with contents (-3 6 -3)
 ```
 
 <hr/>
