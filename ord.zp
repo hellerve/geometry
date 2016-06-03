@@ -1,0 +1,21 @@
+; the default sort is by euclidean distance to the vector
+(defimpl ord point2d:point2d?
+        ((compare (lambda (a b)
+          (let ((x (geometry:euclidean-distance a geometry:ORIGIN2D))
+                (y (geometry:euclidean-distance b geometry:ORIGIN2D)))
+            (compare x y))))))
+(defimpl ord point3d:point3d?
+        ((compare (lambda (a b)
+          (let ((x (geometry:euclidean-distance a geometry:ORIGIN3D))
+                (y (geometry:euclidean-distance b geometry:ORIGIN3D)))
+            (compare x y))))))
+(defimpl ord vector2d:vector2d?
+        ((compare (lambda (a b)
+          (let ((x (geometry:euclidean-distance a geometry:ORIGIN2D))
+                (y (geometry:euclidean-distance b geometry:ORIGIN2D)))
+            (compare x y))))))
+(defimpl ord vector3d:vector3d?
+        ((compare (lambda (a b)
+          (let ((x (geometry:euclidean-distance a geometry:ORIGIN3D))
+                (y (geometry:euclidean-distance b geometry:ORIGIN3D)))
+            (compare x y))))))

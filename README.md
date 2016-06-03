@@ -56,6 +56,11 @@ geometry:ORIGIN3D
 (geometry:cross (geometry:vector3d 1 2 3) (geometry:vector3d 4 5 6)) ; => vector with contents (-3 6 -3)
 ```
 
+Optionally, all of these types also support the ord protocol, which enables
+us to sort them by euclidean distance from the respective origins. All you need
+to do to enable this is loading "geometry/ord" after requiring (or loading and
+importing) "geometry/geometry".
+
 <hr/>
 
 Have fun!

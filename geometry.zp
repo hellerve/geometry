@@ -24,6 +24,7 @@
     (list "vector3d-" vector3d-)
     (list "vector3d+" vector3d+)
     
+    (list "euclidean-distance" euclidean-distance)
     (list "dot" dot)
     (list "cross" cross))
 
@@ -202,7 +203,25 @@
       ((vector3d:vector3d? x)
         (vector3d->point3d x))
       (else :no))))
-      
+
+  (euclidean-distance (lambda (x y)
+    (cond
+      ((and (point2d:point2d? x)
+            (point2d:point2d? y))
+        (sqrt (+ (pow (- (point2d:get-x x)
+                         (point2d:get-x y)) 2)
+                 (pow (- (point2d:get-y x)
+                         (point2d:get-y y)) 2))))
+      ((and (point3d:point3d? x)
+            (point3d:point3d? y))
+        (sqrt (+ (pow (- (point3d:get-x x)
+                         (point3d:get-x y)) 2)
+                 (pow (- (point3d:get-y x)
+                         (point3d:get-y y)) 2)
+                 (pow (- (point3d:get-z x)
+                         (point3d:get-z y)) 2))))
+      (else (nil)))))
+
   (cross (lambda (x y)
     (vector3d
       (- (* (vector3d:get-y x) (vector3d:get-z y))
